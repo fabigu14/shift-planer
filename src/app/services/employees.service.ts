@@ -20,4 +20,11 @@ export class EmployeesService {
   deleteEmploye(employe: Employe){
     this.employees.splice(this.employees.indexOf(employe), 1)
   }
+
+  updateEmploye(updatedEmployeData: any, employeToBeUpdated: Employe){
+    employeToBeUpdated.firstName = updatedEmployeData.firstName;
+    employeToBeUpdated.lastName = updatedEmployeData.lastName;
+    employeToBeUpdated.code = updatedEmployeData.code;
+    employeToBeUpdated.division = updatedEmployeData.division;
+  }
 }

@@ -24,8 +24,9 @@ export class EmployeesComponent implements OnInit {
     this.employees = this.employeesService.employees;
   }
 
-  showDialog() {
+  showDialog(employe?: Employe) {
     const ref = this.dialogService.open(EmployeDialogComponent, {
+      data: employe,
       header: 'Mitarbeiter anlegen',
       width: '500px',
     });
@@ -33,6 +34,7 @@ export class EmployeesComponent implements OnInit {
 
   editEmploye(employe: Employe) {
     console.log(employe);
+    this.showDialog(employe);
   }
 
   deleteEmploye(employe: Employe) {

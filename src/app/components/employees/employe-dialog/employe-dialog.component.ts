@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EmployeesService } from 'src/app/services/employees.service';
 
 
@@ -9,12 +9,7 @@ import { EmployeesService } from 'src/app/services/employees.service';
   templateUrl: './employe-dialog.component.html',
   styleUrls: ['./employe-dialog.component.scss']
 })
-export class EmployeDialogComponent {
-
-  constructor(
-    private employeesService: EmployeesService,
-    public ref: DynamicDialogRef
-  ) { }
+export class EmployeDialogComponent implements OnInit {
 
   employeForm = new FormGroup({
     firstName: new FormControl('Fabian', [Validators.required, Validators.minLength(1)]),
@@ -29,9 +24,24 @@ export class EmployeDialogComponent {
     'Aufsicht'
   ]
 
+  constructor(
+    private employeesService: EmployeesService,
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig
+  ) { }
+
+  ngOnInit(): void {
+    if (this.config.data) {
+      this.employeForm.patchValue(this.config.data);
+    }
+  }
+
   onSubmit() {
-    // console.log(this.employeForm.value);
-    this.employeesService.createEmploye(this.employeForm.value)
+    if (this.config.data) {
+      this.employeesService.updateEmploye(this.employeForm.value, this.config.data);
+    } else {
+      this.employeesService.createEmploye(this.employeForm.value);
+    }
     this.ref.close()
   }
 
