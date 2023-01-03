@@ -1,0 +1,33 @@
+<button pButton (click)="showDialog()" icon="pi pi-plus" label="Neuer Mitarbeiter"></button>
+
+<p-table [value]="employees" [tableStyle]="{'min-width': '60rem'}">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name" style="width:20%">Name<p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="code" style="width:20%">Kürzel<p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th pSortableColumn="division" style="width:20%">Abteilung<p-sortIcon field="division"></p-sortIcon>
+            </th>
+            <th pSortableColumn="division" style="width:20%">
+            </th>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-employe>
+        <tr>
+            <td>{{employe.firstName}} {{employe.lastName}}</td>
+            <td>{{employe.code}}</td>
+            <td>{{employe.division}}</td>
+            <td>
+                <button pButton pRipple type="button" icon="pi pi-pencil"
+                    class="p-button-outlined p-button-rounded p-button-secondary" (click)="editEmploye(employe)">
+                </button>
+                <button pButton pRipple type="button" icon="pi pi-trash"
+                    class="p-button-outlined p-button-rounded p-button-danger" (click)="deleteEmploye(employe)">
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

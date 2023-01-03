@@ -1,0 +1,32 @@
+<p-table  [value]="shiftplan" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <!-- <ng-template pTemplate="caption">
+        Header
+    </ng-template> -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Montag</th>
+            <th>Dienstag</th>
+            <th>Mittwoch</th>
+            <th>Donnerstag</th>
+            <th>Freitag</th>
+            <th>Samstag</th>
+            <th>Sonntag </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-shift>
+        <tr>
+            <td *ngFor="let weekday of shift.weekdays">
+                <div>
+                    <div *ngFor="let shift of weekday.shifts">
+                        <p-chip label="{{shift.employe}} {{shift.workingHours}}" icon="pi pi-user"
+                            styleClass="mb-2 {{shift.division.toLowerCase()}}" [removable]="true"></p-chip>
+                         
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <!-- <ng-template pTemplate="summary">
+        Footer
+    </ng-template> -->
+</p-table>

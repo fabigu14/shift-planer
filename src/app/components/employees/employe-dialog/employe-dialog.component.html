@@ -1,0 +1,30 @@
+<form class="p-fluid" [formGroup]="employeForm" (ngSubmit)="onSubmit()">
+    <div class="field col-12">
+        <span>
+            <p-dropdown [options]="divisions" placeholder="Abteilung"  formControlName="division"></p-dropdown>
+        </span>
+    </div>
+    <div class="field col-12 ">
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText formControlName="firstName">
+            <label for="float-input">Vorname</label>
+        </span>
+    </div>
+    <div class="field col-12">
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText formControlName="lastName">
+            <label for="float-input">Nachname</label>
+        </span>
+    </div>
+
+    <div class="field col-12">
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText formControlName="code">
+            <label for="float-input">Kürzel</label>
+        </span>
+    </div>
+    <div class="field col-12 flex justify-content-end">
+        <p-button label="Abbrechen" styleClass="p-button-danger" icon="pi pi-times" iconPos="right"></p-button>
+        <p-button [disabled]="!employeForm.valid" type="submit" label="Speichern" styleClass="p-button-success" icon="pi pi-check" iconPos="right"></p-button>
+    </div>
+</form>
