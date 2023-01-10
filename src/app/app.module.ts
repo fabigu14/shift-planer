@@ -8,10 +8,11 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { MenubarModule } from 'primeng/menubar';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 
 import { AppComponent } from './app.component';
@@ -19,6 +20,12 @@ import { ShiftTableComponent } from './components/shift-table/shift-table.compon
 import { EmployeesComponent } from './components/employees/employees.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { EmployeDialogComponent } from './components/employees/employe-dialog/employe-dialog.component';
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { ConfirmDeleteDialogComponent } from './shared/dialogs/confirm-delete-dialog/confirm-delete-dialog.component';
+
+
 
 @NgModule({
   declarations: [
@@ -27,6 +34,7 @@ import { EmployeDialogComponent } from './components/employees/employe-dialog/em
     EmployeesComponent,
     MenuComponent,
     EmployeDialogComponent,
+    ConfirmDeleteDialogComponent,
 
   ],
   imports: [
@@ -42,8 +50,11 @@ import { EmployeDialogComponent } from './components/employees/employe-dialog/em
     DialogModule,
     InputTextModule,
     DropdownModule,
+    ConfirmDialogModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
-  providers: [],
+  providers: [DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { EmployeesService } from 'src/app/services/employees.service';
+import { EmployeesService } from 'src/app/shared/services/employees.service';
 
 
 @Component({
