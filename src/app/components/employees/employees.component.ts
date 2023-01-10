@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Employe } from 'src/app/models/employe';
-import { EmployeesService } from 'src/app/services/employees.service';
+import { EmployeesService } from 'src/app/shared/services/employees.service';
+import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { EmployeDialogComponent } from './employe-dialog/employe-dialog.component';
 
 @Component({
@@ -16,16 +18,31 @@ export class EmployeesComponent implements OnInit {
 
   constructor(
     public dialogService: DialogService,
-    private employeesService: EmployeesService
+    private employeesService: EmployeesService,
+    private firestoreService: FirestoreService,
   ) { }
 
 
   ngOnInit(): void {
-    this.employees = this.employeesService.employees;
+    this.firestoreService.get('employees')
+      .subscribe(res => {
+        this.setEmployees(res)
+        console.log(this.employees);
+
+      });
+  }
+
+  setEmployees(employees: DocumentChangeAction<unknown>[]) {
+    this.employees = []
+    employees.forEach((employe) => {
+      this.employees.push(
+        new Employe(employe.payload.doc.data(), employe.payload.doc['id'])
+      )
+    });
   }
 
   showDialog(employe?: Employe) {
-    const ref = this.dialogService.open(EmployeDialogComponent, {
+    this.dialogService.open(EmployeDialogComponent, {
       data: employe,
       header: 'Mitarbeiter anlegen',
       width: '500px',
@@ -33,13 +50,10 @@ export class EmployeesComponent implements OnInit {
   }
 
   editEmploye(employe: Employe) {
-    console.log(employe);
     this.showDialog(employe);
   }
 
   deleteEmploye(employe: Employe) {
-    console.log(employe);
-
     this.employeesService.deleteEmploye(employe)
   }
 

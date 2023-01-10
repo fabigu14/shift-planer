@@ -1,0 +1,10 @@
+<div>
+    <div class="flex flex-row align-items-center p-1">
+        <i class="pi pi-exclamation-circle mr-3" style="font-size: 2rem"></i>
+        <span> Wollen Sie diesen Eintrag wirklich löschen?</span>
+    </div>
+    <div class="mt-4 flex justify-content-end">
+        <button (click)="closeDialog()" pButton pRipple type="button" label="Abbrechen" class="p-button-text mr-1"></button>
+        <button (click)="deleteItem()" pButton type="button" class="p-button-danger" label="Löschen" icon="pi pi-trash"></button>
+    </div>
+</div>
