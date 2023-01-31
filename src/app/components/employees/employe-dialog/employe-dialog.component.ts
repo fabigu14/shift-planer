@@ -42,7 +42,10 @@ export class EmployeDialogComponent implements OnInit {
     } else {
       this.employeesService.createEmploye(this.employeForm.value);
     }
-    this.ref.close()
+    this.closeDialog()
   }
 
+  closeDialog() {
+    this.ref.close()
+  }
 }

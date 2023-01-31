@@ -1,5 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
+import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject } from 'rxjs';
 import { Employe } from '../../models/employe';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete-dialog/confirm-delete-dialog.component';
 import { FirestoreService } from './firestore.service';
@@ -9,7 +11,7 @@ import { FirestoreService } from './firestore.service';
 })
 export class EmployeesService {
 
-  // employees: Employe[] = []
+  employeesChanges: Subject<Employe[]> = new Subject<Employe[]>();
 
   constructor(
     private firestoreService: FirestoreService,
@@ -31,6 +33,24 @@ export class EmployeesService {
     });
   }
 
+  async getEmployees() {
+    this.firestoreService.get('employees')
+      .subscribe(async (res) => {
+        await this.setEmployees(res);
+      });
+  }
+
+  async setEmployees(employees: DocumentChangeAction<unknown>[]) {
+    let employeesArr: Employe[] = []
+    employees.forEach((employe) => {
+      employeesArr.push(
+        new Employe(employe.payload.doc.data(), employe.payload.doc['id'])
+      )
+    });
+    console.log(employeesArr);
+    this.employeesChanges.next(employeesArr)
+  }
+
   updateEmploye(updatedEmployeData: any, employeToBeUpdated: Employe) {
     employeToBeUpdated.firstName = updatedEmployeData.firstName;
     employeToBeUpdated.lastName = updatedEmployeData.lastName;
@@ -39,6 +59,4 @@ export class EmployeesService {
 
     this.firestoreService.update(employeToBeUpdated, 'employees', employeToBeUpdated.userID);
   }
-
-
 }
