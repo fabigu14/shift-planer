@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ConfirmDeleteDialogComponent } from './shared/dialogs/confirm-delete-dialog/confirm-delete-dialog.component';
+import { ShiftDialogComponent } from './components/shift-table/shift-dialog/shift-dialog.component';
 
 
 
@@ -35,6 +36,7 @@ import { ConfirmDeleteDialogComponent } from './shared/dialogs/confirm-delete-di
     MenuComponent,
     EmployeDialogComponent,
     ConfirmDeleteDialogComponent,
+    ShiftDialogComponent,
 
   ],
   imports: [

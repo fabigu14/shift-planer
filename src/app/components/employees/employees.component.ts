@@ -3,7 +3,6 @@ import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Employe } from 'src/app/models/employe';
 import { EmployeesService } from 'src/app/shared/services/employees.service';
-import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { EmployeDialogComponent } from './employe-dialog/employe-dialog.component';
 
 @Component({
@@ -19,26 +18,14 @@ export class EmployeesComponent implements OnInit {
   constructor(
     public dialogService: DialogService,
     private employeesService: EmployeesService,
-    private firestoreService: FirestoreService,
   ) { }
 
 
-  ngOnInit(): void {
-    this.firestoreService.get('employees')
-      .subscribe(res => {
-        this.setEmployees(res)
-        console.log(this.employees);
-
-      });
-  }
-
-  setEmployees(employees: DocumentChangeAction<unknown>[]) {
-    this.employees = []
-    employees.forEach((employe) => {
-      this.employees.push(
-        new Employe(employe.payload.doc.data(), employe.payload.doc['id'])
-      )
-    });
+  async ngOnInit(): Promise<void> {
+    await this.employeesService.getEmployees()
+    this.employeesService.employeesChanges.subscribe( value => {
+      this.employees = value
+    })
   }
 
   showDialog(employe?: Employe) {

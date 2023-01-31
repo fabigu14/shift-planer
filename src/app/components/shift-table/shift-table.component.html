@@ -1,7 +1,4 @@
-<p-table  [value]="shiftplan" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
-    <!-- <ng-template pTemplate="caption">
-        Header
-    </ng-template> -->
+<p-table [value]="shiftplan" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="header">
         <tr>
             <th>Montag</th>
@@ -15,18 +12,16 @@
     </ng-template>
     <ng-template pTemplate="body" let-shift>
         <tr>
-            <td *ngFor="let weekday of shift.weekdays">
+            <td *ngFor="let weekday of shift.weekdays;">
                 <div>
-                    <div *ngFor="let shift of weekday.shifts">
-                        <p-chip label="{{shift.employe}} {{shift.workingHours}}" icon="pi pi-user"
-                            styleClass="mb-2 {{shift.division.toLowerCase()}}" [removable]="true"></p-chip>
-                         
+                    <button pButton pRipple (click)="showShiftDialog(weekday)" type="button" icon="pi pi-plus"
+                        class="p-button-rounded p-button-secondary"></button>
+                    <div *ngFor="let shift of weekday.shifts; index as i">
+                        <p-chip label="{{shift.employe.firstName}} {{shift.employe.lastName}} {{shift.start}} - {{shift.end}}" icon="pi pi-user"
+                            styleClass="mb-2 {{shift.division.toLowerCase()}}" (click)="editShift(weekday, shift, i)" [removable]="true" (onRemove)="deleteShift(weekday, i)"></p-chip>
                     </div>
                 </div>
             </td>
         </tr>
     </ng-template>
-    <!-- <ng-template pTemplate="summary">
-        Footer
-    </ng-template> -->
 </p-table>

@@ -1,0 +1,41 @@
+<form class="p-fluid" [formGroup]="shiftForm" (ngSubmit)="onSubmit()">
+    <div class="field col-12">
+        <span>
+            <p-dropdown [options]="divisions" placeholder="Abteilung" formControlName="division"></p-dropdown>
+        </span>
+    </div>
+    <div class="field col-12">
+        <p-dropdown [options]="employees" formControlName="employe" optionLabel="firstName" [filter]="true"
+            filterBy="lastName" [showClear]="true" placeholder="Mitarbeiter auswählen">
+            <ng-template let-employe pTemplate="selectedItem">
+                <div class="flex">
+                    <div>{{employe.firstName}} {{employe.lastName}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-employe pTemplate="item">
+                <div>
+                    <div>{{employe.firstName}} {{employe.lastName}}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+    </div>
+
+    <div class="field col-12 ">
+        <span class="field">
+            <label for="input">Beginn</label>
+            <input id="input" type="time" pInputText formControlName="start">
+        </span>
+    </div>
+    <div class="field col-12">
+        <span class="field">
+            <label for="input">Ende</label>
+            <input id="input" type="time" pInputText formControlName="end">
+        </span>
+    </div>
+
+    <div class="field col-12 flex justify-content-end">
+        <p-button (click)="closeDialog()" label="Abbrechen" styleClass="p-button-danger" icon="pi pi-times" iconPos="right"></p-button>
+        <p-button [disabled]="!shiftForm.valid" type="submit" label="Speichern" styleClass="p-button-success" icon="pi pi-check"
+            iconPos="right"></p-button>
+    </div>
+</form>
