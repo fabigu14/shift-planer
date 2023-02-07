@@ -12,7 +12,7 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 import { AppComponent } from './app.component';
@@ -25,6 +25,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ConfirmDeleteDialogComponent } from './shared/dialogs/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ShiftDialogComponent } from './components/shift-table/shift-dialog/shift-dialog.component';
+import { MomentPipe } from './shared/pipes/moment.pipe';
 
 
 
@@ -37,7 +38,7 @@ import { ShiftDialogComponent } from './components/shift-table/shift-dialog/shif
     EmployeDialogComponent,
     ConfirmDeleteDialogComponent,
     ShiftDialogComponent,
-
+    MomentPipe,
   ],
   imports: [
     BrowserModule,

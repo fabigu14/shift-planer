@@ -20,7 +20,7 @@ export class FirestoreService {
     return this.fs.collection(collection).snapshotChanges();
   }
 
-  update(item: Employe, collection: string, id: string) {
+  update(item: any, collection: string, id: string) {
     console.log(item);
     this.fs
       .collection(collection)

@@ -1,4 +1,10 @@
 <form class="p-fluid" [formGroup]="shiftForm" (ngSubmit)="onSubmit()">
+    <div class="field col-12 ">
+        <span class="field">
+            <label for="input">Datum</label>
+            <input id="input" type="text" [disabled]="disabled" pInputText formControlName="date">
+        </span>
+    </div>
     <div class="field col-12">
         <span>
             <p-dropdown [options]="divisions" placeholder="Abteilung" formControlName="division"></p-dropdown>

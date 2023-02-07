@@ -12,7 +12,7 @@ export class ConfirmDeleteDialogComponent {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private firestoreService: FirestoreService
+    private fs: FirestoreService
   ) { }
 
   closeDialog(){
@@ -20,7 +20,7 @@ export class ConfirmDeleteDialogComponent {
   }
 
   deleteItem(){
-    this.firestoreService.delete(
+    this.fs.delete(
       this.config.data.id,
       this.config.data.collection
     )

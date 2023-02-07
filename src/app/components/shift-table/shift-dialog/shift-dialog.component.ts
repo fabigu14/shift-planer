@@ -16,6 +16,8 @@ export class ShiftDialogComponent implements OnInit {
 
   selectedEmploye: Employe
 
+  disabled: boolean = true
+
   divisions = [
     'Service',
     'Trainer',
@@ -23,6 +25,8 @@ export class ShiftDialogComponent implements OnInit {
   ]
 
   shiftForm = new FormGroup({
+    date: new FormControl({ value: this.config.data.weekday, disabled: true }, [Validators.required]),
+    timeOfDay: new FormControl(this.config.data.shift, [Validators.required]),
     start: new FormControl('12:33', [Validators.required]),
     end: new FormControl('12:33', [Validators.required]),
     employe: new FormControl('', [Validators.required, Validators.minLength(1)]),
@@ -37,7 +41,8 @@ export class ShiftDialogComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.setEmployees()
-    if (this.config.data.shift) {
+    
+    if (this.config.data.shift.id) {
       this.shiftForm.patchValue(this.config.data.shift)
     }
   }
@@ -50,10 +55,10 @@ export class ShiftDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.config.data.shift) {
-      this.shiftService.updateShift(this.config.data, this.shiftForm.value)
+    if (this.config.data.shift.id) {
+      this.shiftService.updateShift(this.config.data.shift, this.shiftForm.getRawValue())
     } else {
-      this.shiftService.createShift(this.config.data, this.shiftForm.value)
+      this.shiftService.createShift(this.shiftForm.getRawValue())
     }
     this.closeDialog()
   }

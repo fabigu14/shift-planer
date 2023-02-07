@@ -1,24 +1,31 @@
-<p-table [value]="shiftplan" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="shiftTimes" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+
+    <ng-template pTemplate="caption">
+
+        <div class="flex justify-content-center align-items-center">
+            <button pButton pRipple (click)="lastWeek()" type="button" icon="pi pi-angle-left"
+                class="p-button-rounded p-button-secondary p-button-text"></button>
+             <span>{{startOfWeek}} - {{endOfWeek}}</span>
+            <button pButton pRipple (click)="nextWeek()"  type="button" icon="pi pi-angle-right"
+                class="p-button-rounded p-button-secondary p-button-text"></button>
+        </div>
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th>Montag</th>
-            <th>Dienstag</th>
-            <th>Mittwoch</th>
-            <th>Donnerstag</th>
-            <th>Freitag</th>
-            <th>Samstag</th>
-            <th>Sonntag </th>
+            <th *ngFor="let weekday of currentWeek">{{weekday | dateFormat: 'dddd'}}</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-shift>
+    <ng-template pTemplate="body" let-shiftTime>
         <tr>
-            <td *ngFor="let weekday of shift.weekdays;">
+            <td *ngFor="let weekday of currentWeek;">
                 <div>
-                    <button pButton pRipple (click)="showShiftDialog(weekday)" type="button" icon="pi pi-plus"
-                        class="p-button-rounded p-button-secondary"></button>
-                    <div *ngFor="let shift of weekday.shifts; index as i">
-                        <p-chip label="{{shift.employe.firstName}} {{shift.employe.lastName}} {{shift.start}} - {{shift.end}}" icon="pi pi-user"
-                            styleClass="mb-2 {{shift.division.toLowerCase()}}" (click)="editShift(weekday, shift, i)" [removable]="true" (onRemove)="deleteShift(weekday, i)"></p-chip>
+                    <button pButton pRipple (click)="showShiftDialog(shiftTime, weekday)" type="button"
+                        icon="pi pi-plus" class="p-button-rounded p-button-secondary"></button>
+                    <div *ngFor="let shift of shifts; index as i">
+                        <p-chip *ngIf="checkMatchingDate(weekday, shiftTime, shift.date, shift.timeOfDay)"
+                            label="{{shift.employe.firstName}} {{shift.employe.lastName}} {{shift.start}} - {{shift.end}}"
+                            icon="pi pi-user" styleClass="mb-2 {{shift.division.toLowerCase()}} cursor-pointer"
+                            (dblclick)="editShift(shift)" [removable]="true" (onRemove)="deleteShift(shift)"></p-chip>
                     </div>
                 </div>
             </td>

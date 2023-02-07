@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Employe } from 'src/app/models/employe';
-import { EmployeesService } from 'src/app/shared/services/employees.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { ShiftService } from './services/shift.service';
 import { ShiftDialogComponent } from './shift-dialog/shift-dialog.component';
+import 'moment/locale/de'
+import * as moment from 'moment';
+import { Shift } from 'src/app/models/shift';
+
+// const moment = require('moment');
+moment.locale('de')
+
 
 @Component({
   selector: 'app-shift-table',
@@ -12,107 +18,13 @@ import { ShiftDialogComponent } from './shift-dialog/shift-dialog.component';
   styleUrls: ['./shift-table.component.scss']
 })
 export class ShiftTableComponent implements OnInit {
-  shiftplan = [
-    {
-      dayTime: 'Vormittag',
-      weekdays: [
-        {
-          day: 'Montag',
-          shifts: []
-        },
-        {
-          day: 'Dienstag',
-          shifts: []
-        },
-        {
-          day: 'Mittwoch',
-          shifts: []
-        },
-        {
-          day: 'Donnerstag',
-          shifts: []
-        },
-        {
-          day: 'Freitag',
-          shifts: []
-        },
-        {
-          day: 'Samstag',
-          shifts: []
-        },
-        {
-          day: 'Sonntag',
-          shifts: []
-        },
-      ]
-    },
-    {
-      dayTime: 'Nachmittag',
-      weekdays: [
-        {
-          day: 'Montag',
-          shifts: []
-        },
-        {
-          day: 'Dienstag',
-          shifts: []
-        },
-        {
-          day: 'Mittwoch',
-          shifts: []
-        },
-        {
-          day: 'Donnerstag',
-          shifts: []
-        },
-        {
-          day: 'Freitag',
-          shifts: []
-        },
-        {
-          day: 'Samstag',
-          shifts: []
-        },
-        {
-          day: 'Sonntag',
-          shifts: []
-        },
-      ]
-    },
-    {
-      dayTime: 'Nachmittag',
-      weekdays: [
-        {
-          day: 'Montag',
-          shifts: []
-        },
-        {
-          day: 'Dienstag',
-          shifts: []
-        },
-        {
-          day: 'Mittwoch',
-          shifts: []
-        },
-        {
-          day: 'Donnerstag',
-          shifts: []
-        },
-        {
-          day: 'Freitag',
-          shifts: []
-        },
-        {
-          day: 'Samstag',
-          shifts: []
-        },
-        {
-          day: 'Sonntag',
-          shifts: []
-        },
-      ]
-    }
-  ]
+
+  shiftTimes = ['Vormittag', 'Nachmittag', 'Abend']
+
+  currentWeek: any = []
+  today = moment()
+  startOfWeek: any
+  endOfWeek: any
 
   constructor(
     public dialogService: DialogService,
@@ -120,33 +32,72 @@ export class ShiftTableComponent implements OnInit {
     private shiftService: ShiftService,
   ) { }
 
-  employees: Employe[] = []
+  shifts: any[]
 
-  ngOnInit(): void {
-    this.firestoreService.get('employees')
-      .subscribe(res => {
-        console.log(res);
-      })
+  async ngOnInit(): Promise<void> {
+    await this.shiftService.getShifts()
+    this.shiftService.shiftChanges.subscribe(value => {
+      this.shifts = value
+    })
+    this.getCurrentWeek()
+
   }
 
-  showShiftDialog(weekday: any, shift?: any, index?: number) {
+  getCurrentWeek() {
+    moment.updateLocale('de', {
+      longDateFormat: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'DD.MM.YY',
+        LL: 'D. MMMM YYYY',
+        LLL: 'L LT', // LLL has been modified to override the the format
+        LLLL: 'dddd, D. MMMM YYYY HH:mm',
+      },
+    });
+
+    this.startOfWeek = moment(moment(this.today).startOf('isoWeek').toDate()).format('LL');
+    this.endOfWeek = moment(moment(this.today).endOf('isoWeek').toDate()).format('LL');
+    let currentDayOfWeek = this.startOfWeek
+    this.currentWeek = []
+    while (moment(currentDayOfWeek).isBefore(this.endOfWeek) || moment(currentDayOfWeek).isSame(this.endOfWeek)) {
+      this.currentWeek.push(currentDayOfWeek)
+      currentDayOfWeek = moment(currentDayOfWeek).add(1, 'days').format('LL')
+    }
+  }
+
+  nextWeek() {
+    this.today.add(7, 'days')
+    this.getCurrentWeek()
+  }
+
+  lastWeek() {
+    this.today.subtract(7, 'days')
+    this.getCurrentWeek()
+  }
+
+  showShiftDialog(shift: any, weekday?: any,) {
 
     this.dialogService.open(ShiftDialogComponent, {
       data: {
-        weekday,
         shift,
-        index
+        weekday
       },
       header: 'Schicht anlegen',
       width: '500px',
     });
   }
 
-  deleteShift(weekday: any, index: number) {
-   this.shiftService.deleteShift(weekday, index)
+  deleteShift(shift: Shift) {
+    this.shiftService.deleteShift(shift)
   }
 
-  editShift(weekday: any, shift: any, index: number) {
-    this.showShiftDialog(weekday, shift, index)
+  editShift(shift: any) {
+    this.showShiftDialog(shift)
   }
+
+  checkMatchingDate(weekday: any, shiftTime: any, day: any, timeOfDay: any) {
+    return (weekday === day && shiftTime === timeOfDay);
+  }
+
+
 }

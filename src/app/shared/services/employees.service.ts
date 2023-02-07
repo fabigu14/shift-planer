@@ -14,12 +14,12 @@ export class EmployeesService {
   employeesChanges: Subject<Employe[]> = new Subject<Employe[]>();
 
   constructor(
-    private firestoreService: FirestoreService,
+    private fs: FirestoreService,
     private dialogService: DialogService) { }
 
   createEmploye(employe: any) {
     const newEmploye = new Employe(employe)
-    this.firestoreService.post(newEmploye, 'employees')
+    this.fs.post(newEmploye, 'employees')
   }
 
   deleteEmploye(employe: Employe) {
@@ -34,7 +34,7 @@ export class EmployeesService {
   }
 
   async getEmployees() {
-    this.firestoreService.get('employees')
+    this.fs.get('employees')
       .subscribe(async (res) => {
         await this.setEmployees(res);
       });
@@ -47,7 +47,6 @@ export class EmployeesService {
         new Employe(employe.payload.doc.data(), employe.payload.doc['id'])
       )
     });
-    console.log(employeesArr);
     this.employeesChanges.next(employeesArr)
   }
 
@@ -57,6 +56,6 @@ export class EmployeesService {
     employeToBeUpdated.code = updatedEmployeData.code;
     employeToBeUpdated.division = updatedEmployeData.division;
 
-    this.firestoreService.update(employeToBeUpdated, 'employees', employeToBeUpdated.userID);
+    this.fs.update(employeToBeUpdated, 'employees', employeToBeUpdated.userID);
   }
 }
