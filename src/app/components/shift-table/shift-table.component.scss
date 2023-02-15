@@ -1,17 +1,35 @@
-:host ::ng-deep .p-chip.service {
+.service {
     background-color: #2d7bfb85;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: black;
     border-radius: 10px;
+    width: fit-content;
+    padding: 0 0 0 12px;
 }
 
-:host ::ng-deep .p-chip.aufsicht {
+.aufsicht {
     background-color: #00800063;
     color: black;
     border-radius: 10px;
+    width: fit-content;
 }
 
-:host ::ng-deep .p-chip.trainer {
+.trainer {
     background-color: #ff000063;
     color: black;
     border-radius: 10px;
+    width: fit-content;
 }
+
+.btn{
+    height: 2rem !important;
+    width: 2rem;
+}
+
+:host ::ng-deep .p-chip {
+    background-color: #2d7cfb00;
+    padding: 0;
+}
+

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
+import * as moment from 'moment';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject } from 'rxjs';
 import { Shift } from 'src/app/models/shift';
@@ -44,8 +45,10 @@ export class ShiftService {
     });
   }
 
-  async getShifts() {
-    this.fs.get('shifts')
+  async getShifts(start: string, end: string) {
+    const startOfWeek = moment(start).unix()
+    const endOfWeek = moment(end).unix()
+    this.fs.get('shifts', startOfWeek, endOfWeek)
       .subscribe(async (res) => {
         await this.setShifts(res);
       });

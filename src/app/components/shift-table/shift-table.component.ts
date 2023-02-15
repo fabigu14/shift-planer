@@ -8,7 +8,6 @@ import 'moment/locale/de'
 import * as moment from 'moment';
 import { Shift } from 'src/app/models/shift';
 
-// const moment = require('moment');
 moment.locale('de')
 
 
@@ -21,7 +20,7 @@ export class ShiftTableComponent implements OnInit {
 
   shiftTimes = ['Vormittag', 'Nachmittag', 'Abend']
 
-  currentWeek: any = []
+  selectedWeek: any = []
   today = moment()
   startOfWeek: any
   endOfWeek: any
@@ -35,15 +34,15 @@ export class ShiftTableComponent implements OnInit {
   shifts: any[]
 
   async ngOnInit(): Promise<void> {
-    await this.shiftService.getShifts()
+    this.getWeek()
     this.shiftService.shiftChanges.subscribe(value => {
       this.shifts = value
+      console.log(this.shifts);
+      
     })
-    this.getCurrentWeek()
-
   }
 
-  getCurrentWeek() {
+  getWeek() {
     moment.updateLocale('de', {
       longDateFormat: {
         LT: 'HH:mm',
@@ -58,21 +57,30 @@ export class ShiftTableComponent implements OnInit {
     this.startOfWeek = moment(moment(this.today).startOf('isoWeek').toDate()).format('LL');
     this.endOfWeek = moment(moment(this.today).endOf('isoWeek').toDate()).format('LL');
     let currentDayOfWeek = this.startOfWeek
-    this.currentWeek = []
+    this.selectedWeek = []
     while (moment(currentDayOfWeek).isBefore(this.endOfWeek) || moment(currentDayOfWeek).isSame(this.endOfWeek)) {
-      this.currentWeek.push(currentDayOfWeek)
+      this.selectedWeek.push(currentDayOfWeek)
       currentDayOfWeek = moment(currentDayOfWeek).add(1, 'days').format('LL')
     }
+    this.getShifts()
   }
 
+  async getShifts() {
+    await this.shiftService.getShifts(this.startOfWeek, this.endOfWeek)
+  }
   nextWeek() {
     this.today.add(7, 'days')
-    this.getCurrentWeek()
+    this.getWeek()
   }
 
   lastWeek() {
     this.today.subtract(7, 'days')
-    this.getCurrentWeek()
+    this.getWeek()
+  }
+
+  currentWeek() {
+    this.today = moment()
+    this.getWeek()
   }
 
   showShiftDialog(shift: any, weekday?: any,) {
@@ -96,7 +104,7 @@ export class ShiftTableComponent implements OnInit {
   }
 
   checkMatchingDate(weekday: any, shiftTime: any, day: any, timeOfDay: any) {
-    return (weekday === day && shiftTime === timeOfDay);
+    return (moment(weekday).unix() === day && shiftTime === timeOfDay);
   }
 
 

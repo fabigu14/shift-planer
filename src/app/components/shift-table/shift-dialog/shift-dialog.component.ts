@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Employe } from 'src/app/models/employe';
 import { EmployeesService } from 'src/app/shared/services/employees.service';
@@ -41,9 +42,13 @@ export class ShiftDialogComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.setEmployees()
-    
+
     if (this.config.data.shift.id) {
       this.shiftForm.patchValue(this.config.data.shift)
+
+      this.shiftForm.patchValue({
+        date: moment.unix(this.config.data.shift.date).format('LL'),
+      })
     }
   }
 
