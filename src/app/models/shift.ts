@@ -1,8 +1,9 @@
+import * as moment from "moment"
 import { Employe } from "./employe"
 
 export class Shift {
     id: string
-    date: string
+    date: number
     timeOfDay: string
     start: string
     end: string
@@ -11,7 +12,7 @@ export class Shift {
 
     constructor(shift: any, id?: string) {
         this.id = id ? id : '';
-        this.date = shift.date
+        this.date = typeof shift.date === 'string' ? moment(shift.date).unix() : shift.date
         this.timeOfDay = shift.timeOfDay
         this.start = shift.start
         this.end = shift.end
