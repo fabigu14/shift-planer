@@ -1,0 +1,11 @@
+<form (ngSubmit)="login()" [formGroup]="loginForm">
+    <div class="field">
+        <label for="username" class="block">Email</label>
+        <input id="username" type="email" aria-describedby="username1-help" pInputText formControlName="email" />
+    </div>
+    <div class="field">
+        <label for="password" class="block">Passwort</label>
+        <input id="password" type="password" aria-describedby="username1-help" pInputText formControlName="password" />
+    </div>
+    <p-button type="submit" label="Login"></p-button>
+</form>

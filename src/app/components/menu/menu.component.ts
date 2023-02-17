@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +13,7 @@ export class MenuComponent {
     {
       label: 'Arbeitsplan',
       icon: 'pi pi-fw pi-calendar',
-      routerLink: ['']
+      routerLink: ['/shiftplan']
     },
     {
       label: 'Mitarbeiter',
@@ -21,5 +22,10 @@ export class MenuComponent {
     }
   ];
 
+  constructor(private authService: AuthService,) {}
+
+  logout() {
+    this.authService.logout()
+  }
 }
 

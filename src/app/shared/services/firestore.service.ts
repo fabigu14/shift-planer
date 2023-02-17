@@ -1,7 +1,6 @@
 
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Employe } from 'src/app/models/employe';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +17,13 @@ export class FirestoreService {
   }
 
   get(collection: string, start?: number, end?: number) {
+    
     if (collection === 'shifts') {
-      return this.fs.collection(collection, ref => ref.where("date", ">", start).where("date", "<", end)).snapshotChanges();
+      return this.fs.collection(
+        collection, ref =>
+        ref.where("date", ">", start)
+          .where("date", "<", end))
+        .snapshotChanges();
     }
     return this.fs.collection(collection).snapshotChanges();
   }

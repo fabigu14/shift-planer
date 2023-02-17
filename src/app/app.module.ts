@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -21,13 +22,14 @@ import { EmployeesComponent } from './components/employees/employees.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { EmployeDialogComponent } from './components/employees/employe-dialog/employe-dialog.component';
 import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ConfirmDeleteDialogComponent } from './shared/dialogs/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ShiftDialogComponent } from './components/shift-table/shift-dialog/shift-dialog.component';
 import { MomentPipe } from './shared/pipes/moment.pipe';
+import { AuthComponent } from './components/auth/auth.component';
 
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
@@ -39,11 +41,13 @@ import { MomentPipe } from './shared/pipes/moment.pipe';
     ConfirmDeleteDialogComponent,
     ShiftDialogComponent,
     MomentPipe,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     ReactiveFormsModule,
     TableModule,
     ButtonModule,
@@ -55,7 +59,8 @@ import { MomentPipe } from './shared/pipes/moment.pipe';
     DropdownModule,
     ConfirmDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   providers: [DialogService],
   bootstrap: [AppComponent]
