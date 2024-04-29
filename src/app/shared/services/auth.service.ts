@@ -12,10 +12,7 @@ import { User } from 'src/app/models/user';
 
 export class AuthService {
 
-  signInUrl: string = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBMcfoTTKcxX8Tlvuj5KSB2eZXSlq0Bkoc'
-  user = new BehaviorSubject<User | null>(null);
-
-  constructor(private http: HttpClient,
+  constructor(
     public auth: AngularFireAuth,
     private router: Router) { }
 

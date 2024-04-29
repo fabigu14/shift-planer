@@ -20,7 +20,10 @@ export class ShiftService {
   ) { }
 
   createShift(shiftValue: any) {
+
+    console.log(shiftValue);
     let newShift = new Shift(shiftValue)
+   
     newShift.employe = Object.assign({}, shiftValue.employe)
     this.fs.post(newShift, 'shifts')
   }

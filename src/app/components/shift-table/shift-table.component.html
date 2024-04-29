@@ -4,7 +4,7 @@
         <div class="flex justify-content-center align-items-center">
             <button pButton pRipple (click)="lastWeek()" type="button" icon="pi pi-angle-left"
                 class="p-button-rounded p-button-secondary p-button-text"></button>
-            <span>{{startOfWeek}} - {{endOfWeek}}</span>
+            <span>{{startOfWeek | dateFormat: 'LL'}} - {{endOfWeek | dateFormat: 'LL'}}</span>
             <button pButton pRipple (click)="nextWeek()" type="button" icon="pi pi-angle-right"
                 class="p-button-rounded p-button-secondary p-button-text"></button>
             <button pButton pRipple (click)="currentWeek()" type="button" label="Heute"

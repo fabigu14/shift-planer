@@ -26,7 +26,7 @@ export class ShiftDialogComponent implements OnInit {
   ]
 
   shiftForm = new FormGroup({
-    date: new FormControl({ value: this.config.data.weekday, disabled: true }, [Validators.required]),
+    date: new FormControl({ value: moment(this.config.data.weekday).format('LL') , disabled: true }, [Validators.required]),
     timeOfDay: new FormControl(this.config.data.shift, [Validators.required]),
     start: new FormControl('12:33', [Validators.required]),
     end: new FormControl('12:33', [Validators.required]),

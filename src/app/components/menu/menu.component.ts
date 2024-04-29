@@ -19,6 +19,11 @@ export class MenuComponent {
       label: 'Mitarbeiter',
       icon: 'pi pi-fw pi-users',
       routerLink: ['/employees']
+    },
+    {
+      label: 'Urlaubsplan',
+      icon: 'pi pi-fw pi-users',
+      routerLink: ['/']
     }
   ];
 

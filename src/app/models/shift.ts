@@ -11,8 +11,8 @@ export class Shift {
     division: string
 
     constructor(shift: any, id?: string) {
-        this.id = id ? id : '';
-        this.date = typeof shift.date === 'string' ? moment(shift.date).unix() : shift.date
+        this.id = id ? id : ''; 
+        this.date = typeof shift.date === 'string' ? moment(shift.date, 'LL').unix() : shift.date
         this.timeOfDay = shift.timeOfDay
         this.start = shift.start
         this.end = shift.end

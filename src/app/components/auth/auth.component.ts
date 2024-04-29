@@ -28,18 +28,10 @@ export class AuthComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     ) { }
 
   login() {
     this.authService.login(this.loginForm.value)
-    // this.authService.login(this.loginForm.value).subscribe({
-    //   next: (resData) => {
-    //     console.log(resData);
-    //     this.router.navigate(['/shiftplan'])
-    // },
-    //   error: (e) => console.error(e),
-    // })
   }
 
 }

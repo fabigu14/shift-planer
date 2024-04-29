@@ -8,8 +8,6 @@ import 'moment/locale/de'
 import * as moment from 'moment';
 import { Shift } from 'src/app/models/shift';
 
-moment.locale('de')
-
 
 @Component({
   selector: 'app-shift-table',
@@ -54,14 +52,19 @@ export class ShiftTableComponent implements OnInit {
       },
     });
 
-    this.startOfWeek = moment(moment(this.today).startOf('isoWeek').toDate()).format('LL');
-    this.endOfWeek = moment(moment(this.today).endOf('isoWeek').toDate()).format('LL');
+    this.startOfWeek = moment(this.today).startOf('isoWeek');
+    
+    this.endOfWeek = moment(this.today).endOf('isoWeek');
+    
     let currentDayOfWeek = this.startOfWeek
+    
     this.selectedWeek = []
-    while (moment(currentDayOfWeek).isBefore(this.endOfWeek) || moment(currentDayOfWeek).isSame(this.endOfWeek)) {
+    while (moment(currentDayOfWeek).isSameOrBefore(this.endOfWeek) && moment(currentDayOfWeek).isSameOrAfter(this.startOfWeek)) {
       this.selectedWeek.push(currentDayOfWeek)
-      currentDayOfWeek = moment(currentDayOfWeek).add(1, 'days').format('LL')
+      
+      currentDayOfWeek = moment(currentDayOfWeek).add(1, 'days')
     }
+    
     this.getShifts()
   }
 
@@ -104,6 +107,11 @@ export class ShiftTableComponent implements OnInit {
   }
 
   checkMatchingDate(weekday: any, shiftTime: any, day: any, timeOfDay: any) {
+    // console.log(weekday);
+    
+    // console.log(moment(weekday).format('LL') , moment.unix(day).format('LL'));
+    // console.log( shiftTime, timeOfDay);
+    
     return (moment(weekday).unix() === day && shiftTime === timeOfDay);
   }
 
